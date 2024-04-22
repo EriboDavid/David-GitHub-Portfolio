@@ -75,8 +75,10 @@ function Home() {
         />
         <select value={filterLanguage} onChange={handleFilterChange}>
           <option value="">All Languages</option>
+          <option value="Html">HTML</option>
+          <option value="CSS">CSS</option>
           <option value="JavaScript">JavaScript</option>
-          <option value="Python">Python</option>
+
 
         </select>
       </div>
