@@ -6,6 +6,8 @@ function Home() {
   const [user, setUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showViewMore, setShowViewMore] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUser, setFilteredUser] = useState([]);
 
   const fetchRepos = () => {
     fetch(
@@ -26,10 +28,23 @@ function Home() {
     fetchRepos();
   }, [currentPage]);
 
+  useEffect(() => {
+    setFilteredUser(
+      user.filter((userElement) =>
+        userElement.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, user]);
+
   const viewMore = () => {
     setCurrentPage(currentPage + 1);
   };
-  const userElements = user.map((userElement) => {
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const userElements = filteredUser.map((userElement) => {
     return (
       <div className="repo-card" key={userElement.id}>
         <Link to={`/repodetails/${userElement.name}`}>
@@ -47,6 +62,14 @@ function Home() {
 
   return (
     <>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
       <section className="repo-container">{userElements}</section>
       <p className="view-more" onClick={viewMore}>
         {showViewMore}
